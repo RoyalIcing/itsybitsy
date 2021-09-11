@@ -62,7 +62,7 @@ export function itsy<Input, Output, Result>(
     return exhaustToResult(iterator());
   }
 
-  return Object.freeze({ getResult, [Symbol.iterator]: iterator });
+  return Object.freeze({ getResult, [Symbol.iterator]: iterator }) as any;
 }
 
 export function where<Element>(
