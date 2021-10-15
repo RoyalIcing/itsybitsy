@@ -80,3 +80,68 @@ const numbers = [1, 2, 3, 4, 5, 6];
 const withEvensRepeated = [...bitsy(repeatEvens).iterate(numbers)];
 // [1, 2, 2, 3, 4, 4, 5, 6, 6]
 ```
+
+### Chunk into pairs
+
+```ts
+import { bitsy } from "itsybitsy";
+
+function* chunk2(item: string | number, accum: undefined | unknown) {
+  if (accum === undefined) {
+    return item;
+  } else {
+    yield [accum, item];
+    return;
+  }
+}
+
+const pairsFlat = [
+  "/",
+  8,
+  "/about",
+  3,
+  "/docs/api",
+  2,
+  "/pricing",
+  1,
+];
+const pairs = [...bitsy(chunk2, undefined).iterate(pairsFlat)];
+// [ ["/", 8], ["/about", 3], ["/docs/api", 2], ["/pricing", 1] ]
+```
+
+### Chaining with `.then`
+
+```ts
+import { bitsy } from "itsybitsy";
+
+function* add1(item: number) {
+  yield item + 1;
+}
+
+function* toString(item: number) {
+  yield item.toString();
+}
+
+function* repeatEvens(item: number) {
+  if (item % 2 === 0) {
+    yield item;
+    yield item;
+  } else {
+    yield item;
+  }
+}
+
+const numbers = [1, 2, 3, 4, 5];
+const strings = [...bitsy(add1).then(repeatEvens).then(toString).iterate(numbers)];
+// ["2", "2", "3", "4", "4", "5", "6", "6"]
+```
+
+----
+
+Alternative name: forte?
+
+```ts
+const strings = [...forte(addOne).then(toString).of(numbers)];
+
+const totalCount = forte(count, 0).reduce(numbers);
+```

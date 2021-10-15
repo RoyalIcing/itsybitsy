@@ -1,6 +1,16 @@
 import { where, itsy, bitsy } from "./index";
 
 const numbers = [0, 1, 2, 3, 4, 5];
+const pairsFlat = [
+  "/",
+  8,
+  "/about",
+  3,
+  "/docs/api",
+  2,
+  "/pricing",
+  1,
+];
 
 describe("itsy()", () => {
   function* count(_item: unknown, accum: number) {
@@ -36,6 +46,15 @@ describe("itsy()", () => {
     }
   }
 
+  function* chunk2(item: string | number, accum: undefined | unknown) {
+    if (accum === undefined) {
+      return item;
+    } else {
+      yield [accum, item];
+      return;
+    }
+  }
+
   it("can count", () => {
     const total = itsy(numbers, count, 0).getResult();
     expect(total).toBe(6);
@@ -65,6 +84,16 @@ describe("itsy()", () => {
   it("can flat map", () => {
     const strings = Array.from(itsy(numbers, repeatEvens));
     expect(strings).toEqual([0, 0, 1, 2, 2, 3, 4, 4, 5]);
+  });
+
+  it("can chunk into pairs", () => {
+    const pairs = Array.from(itsy(pairsFlat, chunk2, undefined));
+    expect(pairs).toEqual([
+      ["/", 8],
+      ["/about", 3],
+      ["/docs/api", 2],
+      ["/pricing", 1],
+    ]);
   });
 
   it("can combine transformations", () => {
@@ -112,6 +141,21 @@ describe("itsy()", () => {
         bitsy(where((n: number) => n % 2 === 0)).iterate(numbers)
       );
       expect(evenNumbers).toEqual([0, 2, 4]);
+    });
+
+    it("can flat map", () => {
+      const strings = Array.from(bitsy(repeatEvens).iterate(numbers));
+      expect(strings).toEqual([0, 0, 1, 2, 2, 3, 4, 4, 5]);
+    });
+  
+    it("can chunk into pairs", () => {
+      const pairs = Array.from(bitsy(chunk2, undefined).iterate(pairsFlat));
+      expect(pairs).toEqual([
+        ["/", 8],
+        ["/about", 3],
+        ["/docs/api", 2],
+        ["/pricing", 1],
+      ]);
     });
 
     it("can combine transformations [a]", () => {
