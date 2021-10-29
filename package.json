@@ -1,6 +1,6 @@
 {
   "name": "itsybitsy",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Map, filter, flat map, reduce — all with the one function",
   "source": "src/index.ts",
   "main": "dist/itsybitsy.js",
