@@ -138,7 +138,7 @@ export function bitsy<Input, Output, Result>(
     ) =>
       bitsy(
         function* (element: Input, accumulated: NextResult) {
-          const inner = itsy([element], transform, undefined);
+          const inner = itsy([element], transform, undefined as any);
           return yield* itsy(inner, nextTransform as any, accumulated);
         } as any,
         nextInitial

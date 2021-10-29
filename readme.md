@@ -160,3 +160,22 @@ const strings = [...forte(addOne).then(toString).of(numbers)];
 
 const totalCount = forte(count, 0).reduce(numbers);
 ```
+
+----
+
+Alternative API
+
+```ts
+bitsy({
+  *0(n: number) {
+    if (n % 2 === 0) yield n;
+  },
+  *1(n: number) {
+    yield n.toString();
+  },
+  *2(s: string) {
+    yield `#${s}`;
+  }
+}).iterate([1, 2, 3, 4, 5, 6]);
+// ["#2", "#4", "#6"]
+```
