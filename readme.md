@@ -81,6 +81,21 @@ const withEvensRepeated = [...bitsy(repeatEvens).iterate(numbers)];
 // [1, 2, 2, 3, 4, 4, 5, 6, 6]
 ```
 
+### Compact
+
+```ts
+import { bitsy } from "itsybitsy";
+
+function* compact<T>(item: T): Generator<Exclude<T, null | undefined | false>> {
+  if (item == null || (typeof item === 'boolean' && item === false)) return;
+  yield item as Exclude<T, null | undefined | false>;
+}
+
+const itemsWithFalsey = [0, 1, false, 2, true, 3, null, 4, undefined, 5];
+const itemsWithoutFalsey = [...bitsy(compact).iterate(itemsWithFalsey)];
+// [0, 1, 2, true, 3, 4, 5]
+```
+
 ### Chunk into pairs
 
 ```ts

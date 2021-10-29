@@ -1,6 +1,7 @@
 import { where, itsy, bitsy } from "./index";
 
 const numbers = [0, 1, 2, 3, 4, 5];
+const itemsWithFalsey = [0, 1, false, 2, true, 3, null, 4, undefined, 5];
 const pairsFlat = [
   "/",
   8,
@@ -23,6 +24,11 @@ describe("itsy()", () => {
 
   function* whereEven(item: number) {
     if (item % 2 === 0) yield item;
+  }
+
+  function* compact<T>(item: T): Generator<Exclude<T, null | undefined | false>> {
+    if (item == null || (typeof item === 'boolean' && item === false)) return;
+    yield item as Exclude<T, null | undefined | false>;
   }
 
   function* add1(item: number) {
@@ -79,6 +85,11 @@ describe("itsy()", () => {
   it("can map", () => {
     const strings = Array.from(itsy(numbers, toString));
     expect(strings).toEqual(["0", "1", "2", "3", "4", "5"]);
+  });
+
+  it("can compact", () => {
+    const values = Array.from(itsy(itemsWithFalsey, compact));
+    expect(values).toEqual([0, 1, 2, true, 3, 4, 5]);
   });
 
   it("can flat map", () => {
@@ -146,6 +157,11 @@ describe("itsy()", () => {
     it("can flat map", () => {
       const strings = Array.from(bitsy(repeatEvens).iterate(numbers));
       expect(strings).toEqual([0, 0, 1, 2, 2, 3, 4, 4, 5]);
+    });
+
+    it("can compact", () => {
+      const values = Array.from(bitsy(compact).iterate(itemsWithFalsey));
+      expect(values).toEqual([0, 1, 2, true, 3, 4, 5]);
     });
   
     it("can chunk into pairs", () => {
