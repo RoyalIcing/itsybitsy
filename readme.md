@@ -26,7 +26,7 @@ function* toString(n: number) {
 }
 
 const numbers = [1, 2, 3];
-const strings = [...bitsy(toString).iterate(numbers)];
+const strings = [...bitsy(toString).from(numbers)];
 // ["1", "2", "3"]
 ```
 
@@ -40,7 +40,7 @@ function* whereEven(item: number) {
 }
 
 const numbers = [1, 2, 3, 4, 5, 6];
-const evens = [...bitsy(whereEven).iterate(numbers)];
+const evens = [...bitsy(whereEven).from(numbers)];
 // [2, 4, 6]
 ```
 
@@ -77,7 +77,7 @@ function* repeatEvens(item: number) {
 }
 
 const numbers = [1, 2, 3, 4, 5, 6];
-const withEvensRepeated = [...bitsy(repeatEvens).iterate(numbers)];
+const withEvensRepeated = [...bitsy(repeatEvens).from(numbers)];
 // [1, 2, 2, 3, 4, 4, 5, 6, 6]
 ```
 
@@ -92,7 +92,7 @@ function* compact<T>(item: T): Generator<Exclude<T, null | undefined | false>> {
 }
 
 const itemsWithFalsey = [0, 1, false, 2, true, 3, null, 4, undefined, 5];
-const itemsWithoutFalsey = [...bitsy(compact).iterate(itemsWithFalsey)];
+const itemsWithoutFalsey = [...bitsy(compact).from(itemsWithFalsey)];
 // [0, 1, 2, true, 3, 4, 5]
 ```
 
@@ -120,7 +120,7 @@ const pairsFlat = [
   "/pricing",
   1,
 ];
-const pairs = [...bitsy(chunk2, undefined).iterate(pairsFlat)];
+const pairs = [...bitsy(chunk2, undefined).from(pairsFlat)];
 // [ ["/", 8], ["/about", 3], ["/docs/api", 2], ["/pricing", 1] ]
 ```
 
@@ -147,7 +147,7 @@ function* repeatEvens(item: number) {
 }
 
 const numbers = [1, 2, 3, 4, 5];
-const strings = [...bitsy(add1).then(repeatEvens).then(toString).iterate(numbers)];
+const strings = [...bitsy(add1).then(repeatEvens).then(toString).from(numbers)];
 // ["2", "2", "3", "4", "4", "5", "6", "6"]
 ```
 
@@ -176,6 +176,6 @@ bitsy({
   *2(s: string) {
     yield `#${s}`;
   }
-}).iterate([1, 2, 3, 4, 5, 6]);
+}).from([1, 2, 3, 4, 5, 6]);
 // ["#2", "#4", "#6"]
 ```

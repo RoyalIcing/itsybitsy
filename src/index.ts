@@ -74,7 +74,7 @@ export function where<Element>(
 }
 
 export interface BitsyIterate<Input, Output> {
-  iterate(iterable: Iterable<Input>): Iterable<Output>;
+  from(iterable: Iterable<Input>): Iterable<Output>;
 
   then<Next>(
     nextTransform: (
@@ -126,7 +126,7 @@ export function bitsy<Input, Output, Result>(
   initial: Result
 ): Bitsy<Input, Output, Result> {
   return Object.freeze({
-    iterate: (iterable: Iterable<Input>) => itsy(iterable, transform, initial),
+    from: (iterable: Iterable<Input>) => itsy(iterable, transform, initial),
     result: (iterable: Iterable<Input>) =>
       itsy(iterable, transform, initial).getResult(),
     then: <Next, NextResult>(
