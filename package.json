@@ -1,10 +1,10 @@
 {
   "name": "itsybitsy",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Map, filter, flat map, reduce — all with the one function",
   "source": "src/index.ts",
   "main": "dist/itsybitsy.js",
-  "module": "dist/itsybitsy.modern.js",
+  "module": "dist/itsybitsy.module.js",
   "unpkg": "dist/itsybitsy.umd.js",
   "types": "dist/index.d.ts",
   "exports": {
